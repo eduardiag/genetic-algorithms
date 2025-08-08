@@ -13,6 +13,7 @@ dim_grid = 100
 POP_SIZE = 100
 GENS = 100
 MUTATION_RATE = 0.1
+ELITE_SIZE = POP_SIZE // 20
 
 print("Running TSP with parameters:")
 print(f" - Number of cities: {n_cities}")
@@ -72,15 +73,16 @@ def selection(population, k):
     return sorted(selected, key=fitness, reverse=True)[:2]
 
 def crossover(p1, p2):
-    start, end = sorted(random.sample(range(n_cities), 2))
-    child = [None] * n_cities
+    start, end = sorted(random.sample(range(len(p1)), 2))
+    child = [None] * len(p1)
     child[start:end] = p1[start:end]
-    fill = [city for city in p2 if city not in child]
+    existing = set(child[start:end])
     idx = 0
-    for i in range(n_cities):
-        if child[i] is None:
-            child[i] = fill[idx]
-            idx += 1
+    for city in p2:
+        if city not in existing:
+            while child[idx] is not None:
+                idx += 1
+            child[idx] = city
     return child
 
 """
@@ -98,14 +100,13 @@ def mutate(individual):
     return individual
 
 
-
 # Main loop de l'algorisme genètic
 population = [create_individual() for _ in range(POP_SIZE)]
 
 for gen in range(GENS):
     # population = [mutate(crossover(*selection(population))) for _ in range(POP_SIZE)]
     # Elitisme: guarda el millor a cada generació
-    population = [max(population, key=fitness)] + [mutate(crossover(*selection(population, POP_SIZE // 4))) for _ in range(POP_SIZE - 1)]
+    population = sorted(population, key=fitness, reverse=True)[:ELITE_SIZE] + [mutate(crossover(*selection(population, POP_SIZE // 4))) for _ in range(POP_SIZE - ELITE_SIZE)]
     # print(-fitness(max(population, key=fitness)))
 
 best = max(population, key=fitness)
