@@ -3,10 +3,10 @@ from matplotlib import pyplot, patches
 from collections import Counter
 
 
-N_EXP = 1
-GENS = 1000
+N_EXP = 10
+GENS = 100
 POP_SIZE = 100
-MUTATION_RATE = 0.1
+MUTATION_RATE = 0.3
 ELITE_SIZE = POP_SIZE // 20
 
 # Genera una llista de jobs aleatoris
@@ -220,7 +220,8 @@ for exp in range(N_EXP):
 print("Jobs:", jobs)
 print("Best Overall Schedule:", top_schedule)
 print("Best Overall Makespan:", top_makespan)
-print(convergence)
+print("Parameters:", GENS, POP_SIZE, MUTATION_RATE)
+
 
 
 # Visualització de la convergència
