@@ -6,7 +6,7 @@ from matplotlib import pyplot
 
 
 
-n_experiments = 1
+n_experiments = 10
 
 # Paràmetres
 POP_SIZE = 200
@@ -86,6 +86,7 @@ convergence = []
 
 for exp in range(n_experiments):
     print("Running experiment", exp)
+
     population = [create_individual() for _ in range(POP_SIZE)]
 
     fit = []
@@ -117,7 +118,6 @@ print("BEST OVERALL ROUTE:", top_route)
 print("BEST OVERALL DISTANCE:", top_distance)
 
 
-
 # Visualització de la convergència
 pyplot.figure(figsize=(10, 6))
 for fit in convergence:
@@ -130,14 +130,13 @@ pyplot.tight_layout()
 pyplot.show()
 
 
-
 # Visualització del millor recorregut
-x_coords = [sample_points[point][0] for point in top_route] + [sample_points[top_route[0]][0]]
-y_coords = [sample_points[point][1] for point in top_route] + [sample_points[top_route[0]][1]]
+x_coords = [sample_points[point][0] for point in best] + [sample_points[best[0]][0]]
+y_coords = [sample_points[point][1] for point in best] + [sample_points[best[0]][1]]
 
 pyplot.figure(figsize=(8, 6))
 pyplot.plot(x_coords, y_coords, marker='o', linestyle='-')
-for p in top_route:
+for p in best:
     pyplot.text(sample_points[p][0], sample_points[p][1], p, fontsize=9)
 
 pyplot.title(f'Tour aleatori de {n_cities} punts enters')
