@@ -15,7 +15,8 @@ def solve_cp(jobs, time_limit=20):
             machines.setdefault(m, []).append(itv)
             if o > 0: model.Add(s >= ends[j, o-1])
 
-    for m in machines: model.AddNoOverlap(machines[m])
+    for m in machines:
+        model.AddNoOverlap(machines[m])
 
     makespan = model.NewIntVar(0, horizon, 'makespan')
     model.AddMaxEquality(makespan, [ends[j, len(job)-1] for j, job in enumerate(jobs)])
